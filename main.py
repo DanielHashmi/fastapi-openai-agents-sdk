@@ -168,6 +168,7 @@ async def chat_stream(request: ChatRequest):
 if __name__ == "__main__":
     import uvicorn
 
-    print("Starting server at http://localhost:8000")
-    print("API docs available at http://localhost:8000/docs")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))
+    print(f"Starting server at http://localhost:{port}")
+    print(f"API docs available at http://localhost:{port}/docs")
+    uvicorn.run(app, host="0.0.0.0", port=port)
