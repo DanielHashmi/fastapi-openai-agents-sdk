@@ -8,6 +8,7 @@ A minimal FastAPI server using OpenAI Agents SDK with Groq (OpenAI-compatible AP
 - [Configuration](#configuration)
 - [Local Development](#local-development)
 - [Docker Deployment](#docker-deployment)
+- [Railway Deployment](#railway-deployment)
 - [API Usage](#api-usage)
 - [API Endpoints](#api-endpoints)
 
@@ -138,6 +139,89 @@ docker compose down -v
 # Remove built images
 docker compose down --rmi local
 ```
+
+## Railway Deployment
+
+Deploy this project to [Railway](https://railway.app) in minutes. Railway automatically detects the Dockerfile and handles everything.
+
+### Prerequisites
+
+- Railway account (sign up at https://railway.app)
+- Groq API key from https://console.groq.com/keys
+
+### Deploy Steps
+
+1. **Go to Railway Dashboard:**
+
+   Visit https://railway.app/new
+
+2. **Deploy from GitHub:**
+
+   - Click **"Deploy from GitHub repo"**
+   - Connect your GitHub account (if not already connected)
+   - Select the `fastapi-openai-agents-sdk` repository
+   - Click **"Deploy Now"**
+
+3. **Add Environment Variable:**
+
+   - Click on your newly created service
+   - Go to the **"Variables"** tab
+   - Click **"+ New Variable"**
+   - Add:
+     - **Name:** `GROQ_API_KEY`
+     - **Value:** `your_groq_api_key_here`
+   - Click **"Add"**
+
+4. **Generate Public URL:**
+
+   - Go to the **"Settings"** tab
+   - Scroll to **"Networking"**
+   - Click **"Generate Domain"**
+   - Your app is now live at `https://your-app.up.railway.app`
+
+### Verify Deployment
+
+```bash
+# Replace with your Railway URL
+curl https://your-app.up.railway.app/health
+```
+
+Expected response:
+```json
+{"status": "ok", "model": "openai/gpt-oss-20b", "provider": "groq"}
+```
+
+### Test the API
+
+```bash
+curl -X POST https://your-app.up.railway.app/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is 25 * 4?"}'
+```
+
+### Railway Dashboard Features
+
+| Feature | Location |
+|---------|----------|
+| View logs | **Deployments** → Select deployment → **View Logs** |
+| Redeploy | **Deployments** → **Redeploy** |
+| Environment variables | **Variables** tab |
+| Custom domain | **Settings** → **Networking** → **Custom Domain** |
+| Usage & billing | **Settings** → **Usage** |
+
+### Troubleshooting Railway
+
+**Build fails:**
+- Check the build logs in the **Deployments** tab
+- Ensure the Dockerfile is in the root directory
+
+**App crashes after deploy:**
+- Verify `GROQ_API_KEY` is set in **Variables**
+- Check runtime logs for errors
+
+**Cannot access the URL:**
+- Ensure you generated a domain in **Settings** → **Networking**
+- Wait a few seconds for DNS propagation
 
 ## API Usage
 
