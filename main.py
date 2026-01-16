@@ -7,16 +7,26 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from agents import Agent, Runner, function_tool
-from agents.extensions.models.litellm_model import LitellmModel
+from agents import Agent, Runner, function_tool, AsyncOpenAI, OpenAIChatCompletionsModel
 
 # Load environment variables
 load_dotenv()
 
-# Configure Gemini model via LiteLLM
-gemini_model = LitellmModel(
-    model="gemini/gemini-2.0-flash",
-    api_key=os.getenv("GEMINI_API_KEY"),
+# Get Groq API key
+groq_api_key = os.getenv("GROQ_API_KEY")
+if not groq_api_key:
+    raise ValueError("GROQ_API_KEY is not set. Please define it in your .env file.")
+
+# Configure Groq client (OpenAI-compatible)
+external_client = AsyncOpenAI(
+    api_key=groq_api_key,
+    base_url="https://api.groq.com/openai/v1",
+)
+
+# Configure model via Groq
+groq_model = OpenAIChatCompletionsModel(
+    model="openai/gpt-oss-20b",
+    openai_client=external_client,
 )
 
 
@@ -56,16 +66,16 @@ def calculate(expression: str) -> str:
         return f"Error: {str(e)}"
 
 
-# Create the agent with Gemini model
+# Create the agent with Groq model
 assistant_agent = Agent(
     name="Assistant",
-    instructions="""You are a helpful assistant powered by Google Gemini. You can help with:
+    instructions="""You are a helpful assistant powered by Groq. You can help with:
 - Answering questions
 - Getting weather information for cities
 - Performing calculations
 
 Be concise and helpful in your responses.""",
-    model=gemini_model,
+    model=groq_model,
     tools=[get_weather, calculate],
 )
 
@@ -122,7 +132,7 @@ async def root():
 @app.get("/health")
 async def health():
     """Health check endpoint."""
-    return {"status": "ok", "model": "gemini-2.0-flash"}
+    return {"status": "ok", "model": "openai/gpt-oss-20b", "provider": "groq"}
 
 
 @app.post("/chat", response_model=ChatResponse)
