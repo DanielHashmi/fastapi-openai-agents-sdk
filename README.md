@@ -54,6 +54,8 @@ Run these commands in your terminal inside this project folder:
     git init
     git checkout -b main
     git add .
+    git config --global user.email "you@example.com"
+    git config --global user.name "Your Name"
     git commit -m "Initial deploy"
     ```
 
@@ -61,7 +63,7 @@ Run these commands in your terminal inside this project folder:
     *   Look at your empty Space page. You will see a clone command like `git clone https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME`.
     *   Run the following (replace the URL with YOUR Space's URL):
     ```bash
-    git remote add space https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME
+    git remote add space https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME || git remote set-url space https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE_NAME
     ```
 
 3.  **Push to Deploy:**
