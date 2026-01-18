@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=builder /app/.venv /app/.venv
 
 # Copy application code
-COPY main.py ./
+COPY . .
 
 # Set ownership to non-root user
 RUN chown -R appuser:appgroup /app
@@ -45,10 +45,10 @@ USER appuser
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
-ENV PORT=8000
+ENV PORT=7860
 
 # Expose the application port
-EXPOSE 8000
+EXPOSE 7860
 
 # Run the application
 CMD ["python", "main.py"]

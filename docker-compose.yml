@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile
     container_name: fastapi-agents
     ports:
-      - "8000:8000"
+      - "7860:7860"
     env_file:
       - .env
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:7860/health')"]
       interval: 30s
       timeout: 10s
       retries: 3

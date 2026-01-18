@@ -25,7 +25,7 @@ external_client = AsyncOpenAI(
 
 # Configure model via Groq
 groq_model = OpenAIChatCompletionsModel(
-    model="openai/gpt-oss-20b",
+    model=os.getenv("GROQ_MODEL", "llama3-8b-8192"),
     openai_client=external_client,
 )
 
@@ -168,7 +168,7 @@ async def chat_stream(request: ChatRequest):
 if __name__ == "__main__":
     import uvicorn
 
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", 7860))
     print(f"Starting server at http://localhost:{port}")
     print(f"API docs available at http://localhost:{port}/docs")
     uvicorn.run(app, host="0.0.0.0", port=port)
