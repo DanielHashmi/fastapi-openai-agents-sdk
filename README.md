@@ -52,7 +52,7 @@ Run these commands in your terminal inside this project folder:
 1.  **Initialize Git (if not already done):**
     ```bash
     git init
-    git checkout -b main
+    git checkout -B main
     git add .
     git config --global user.email "you@example.com"
     git config --global user.name "Your Name"
